@@ -1,0 +1,21 @@
+interface:
+  display_name: "Project Agent Operating Model"
+  short_description: "Bootstrap, audit, repair, compact, or upgrade durable project-local operating rules for long-running agent-assisted projects."
+  brand_color: "#3B82F6"
+  default_prompt: |
+    Use $project-agent-operating-model to initialize, audit, repair, compact,
+    or upgrade a durable project-agent operating model.
+
+    Use the explicit user/project language or system language for human-facing
+    generated content. Keep code identifiers, paths, commands, APIs, schema
+    fields, model names, quota-pool names, and stable template fields in
+    English or original form.
+
+    Do not use this skill for routine module implementation, every cross-thread
+    dispatch, every checkpoint, model-tier/model-version routing decision, or
+    ordinary handoff updates after AGENTS.md and docs/thread-operating-model.md
+    are installed. Use it explicitly when project docs are bloated, stale,
+    contradictory, or need context-compaction/archive repair.
+
+policy:
+  allow_implicit_invocation: false
