@@ -1,5 +1,7 @@
 # Project Agent Operating Model
 
+中文说明：[`README.zh-CN.md`](README.zh-CN.md)
+
 A Codex skill package for bootstrapping, auditing, repairing, and compacting durable project-local operating rules for long-running agent-assisted projects.
 
 It installs a project operating model with main planning threads, long-lived module/support/operations/research threads, project-state docs, handoffs, runbooks, ADRs, cross-thread dispatch, checkpoint recovery, Return Inbox workflows, model routing, localization, and context governance.
@@ -50,6 +52,8 @@ project-agent-operating-model/
 ## Installation
 
 See [`INSTALL.md`](INSTALL.md).
+
+Chinese installation notes: [`INSTALL.zh-CN.md`](INSTALL.zh-CN.md).
 
 ## License
 

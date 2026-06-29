@@ -3,12 +3,14 @@
 Generated package contents:
 
 - `.gitignore` — package file — 69 bytes — sha256 `d4efada4bfb23875`
-- `CHANGELOG.md` — package file — 263 bytes — sha256 `57c6c7b63f9ed6c6`
+- `CHANGELOG.md` — package file — 336 bytes — sha256 `3e53b9fb2b32b315`
 - `CONTRIBUTING.md` — package file — 988 bytes — sha256 `b611143878abaa30`
-- `INSTALL.md` — installation notes — 2994 bytes — sha256 `510b5b737bccd2fd`
+- `INSTALL.md` — installation notes — 3055 bytes — sha256 `6a3c579b71457aa3`
+- `INSTALL.zh-CN.md` — Chinese installation notes — 3366 bytes — sha256 `a68847ae39d6a60f`
 - `LICENSE` — MIT open-source license — 1099 bytes — sha256 `71004cf9167540a8`
 - `MANIFEST.md` — package file — 4947 bytes — sha256 `0c183de58d69465a`
-- `README.md` — package overview — 2932 bytes — sha256 `5529b2cfe6967915`
+- `README.md` — package overview — 3054 bytes — sha256 `976f6c72ffaffa77`
+- `README.zh-CN.md` — Chinese package overview — 3548 bytes — sha256 `d6572a3bbcf54699`
 - `SKILL.md` — thin bootstrap/audit/repair/compaction skill — 11944 bytes — sha256 `e0ef9d1047549f35`
 - `agents/openai.yaml` — Codex App metadata and invocation policy — 1066 bytes — sha256 `d85acaf7d21b0bb2`
 - `project-skeleton/AGENTS.md` — package file — 5038 bytes — sha256 `c1a5edee9ffdaaf0`

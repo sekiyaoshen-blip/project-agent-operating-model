@@ -1,5 +1,7 @@
 # Installation Notes
 
+中文安装说明：[`INSTALL.zh-CN.md`](INSTALL.zh-CN.md)
+
 ## Use As A Skill Package
 
 Place this directory wherever your Codex skill loader expects skills, preserving this structure:
