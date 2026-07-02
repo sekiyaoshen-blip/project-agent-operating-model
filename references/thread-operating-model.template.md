@@ -184,6 +184,43 @@ docs/
 
 Archives are not read by default. Read archives only for historical investigation, regression analysis, audits, or context compaction.
 
+
+## Multi-Agent Tool Compatibility
+
+This project may be operated by multiple tools and threads, including Codex, Claude Code, other coding agents, automations, and humans.
+
+All tools must share the same project-state source of truth. Do not store essential project state only in one tool's chat history, memory, or local session.
+
+Shared runtime entry points:
+
+- Codex reads `AGENTS.md`.
+- Claude Code should use a root `CLAUDE.md` that imports `AGENTS.md` and keeps only Claude-specific notes.
+- Other agents should read `AGENTS.md` and `docs/thread-operating-model.md` before changing project-state docs.
+
+Recommended root `CLAUDE.md`:
+
+```md
+@AGENTS.md
+
+## Claude Code
+
+Follow the Project Agent Operating Model.
+Use this file only for Claude-specific notes.
+Do not duplicate the full operating model here; update `AGENTS.md` or `docs/thread-operating-model.md` instead.
+Before broad active-doc rewrites, check `docs/.locks/` and follow the LV2 compaction policy.
+```
+
+Before modifying files, every agent must:
+
+1. Check current workspace state using the project's normal status command.
+2. Identify its thread role, Task ID, or Return Packet.
+3. Read the relevant active docs.
+4. Check `docs/.locks/` for active locks.
+5. Avoid editing files owned by another active task unless routed.
+6. Update status, handoff, runbook, registry, thread-runs, or compaction notes only when substantive state changes.
+
+Use a separate branch, worktree, or explicit lock for large, risky, parallel, or shared-doc work.
+
 ### Handoff Rewrite Rule
 
 `handoff.md` must be rewritten as a compact current handoff, not appended forever.
@@ -267,6 +304,147 @@ Main thread should normally read:
 
 Do not read archives, all module runbooks, all thread-runs, or unrelated ADRs by default.
 
+### Context Compaction Mode: LV2 Controlled Autonomous Execution
+
+This project uses LV2 context compaction by default.
+
+LV2 means agents may autonomously **detect** compaction triggers and may autonomously **execute docs-only compaction** only when all safety conditions are satisfied.
+
+LV2 compaction is allowed to:
+
+- Rewrite active project-state docs as current snapshots.
+- Move stale or historical details to `docs/archive/`.
+- Close, supersede, or archive stale dispatch queue rows.
+- Move processed Return Packets out of `docs/thread-runs/inbox/main/`.
+- Update archive indexes and compaction notes.
+- Update `docs/thread-registry.md` only for queue, lock, and active-context hygiene.
+
+LV2 compaction must not:
+
+- Modify source code, tests, production config, schemas, migrations, credentials, or deployment files.
+- Change product direction, module ownership, roadmap priority, public contracts, or ADR decisions.
+- Delete historical material without archiving or summarizing it first.
+- Rewrite docs owned by an active task without checking locks and queue state.
+- Run destructive shell commands.
+- Resolve semantic conflicts by guessing; escalate to the main thread instead.
+
+If a needed cleanup exceeds LV2 scope, create a Context Compaction Request or Return Packet and let the main thread or user decide.
+
+### Compaction Lock Rule
+
+Broad context compaction requires a lock.
+
+Use this lock path by default:
+
+```text
+docs/.locks/context-compaction.lock
+```
+
+The lock applies across:
+
+- Different agent tools, such as Codex, Claude Code, other coding agents, automations, and humans.
+- Different threads or sessions inside the same tool, such as two Codex threads or two Claude Code sessions.
+- Main thread, module threads, support threads, operations threads, research threads, and automation threads.
+
+Every lock owner must identify both the tool and the thread/session. The same tool in a different thread is a different owner.
+
+A compaction lock must record:
+
+- Lock ID
+- Lock type: `context-compaction`
+- Owner tool: `codex | claude-code | other-agent | automation | human`
+- Owner thread / session / conversation ID when available
+- Owner task / run ID when available
+- Scope
+- Files locked
+- Started at
+- Last heartbeat
+- Expected release
+- Stale after
+- Status: `active | stale | released`
+- Safety mode: `LV2-docs-only`
+- Notes / handoff
+
+Lock acquisition protocol:
+
+1. Check whether `docs/.locks/context-compaction.lock` exists.
+2. If no active lock exists, create the lock before rewriting active docs.
+3. If an active lock exists, do not rewrite locked files.
+4. If the lock appears stale, mark or report it as stale, but do not silently overwrite it.
+5. Ask the main thread or user to take over a stale lock when the owner is unclear.
+6. Update heartbeat before and after each meaningful compaction phase.
+7. Release the lock when the compaction note is written and active docs are consistent.
+
+Lock release protocol:
+
+1. Finish archive-first movement and active-doc rewrites.
+2. Write `docs/archive/compactions/YYYY-MM-DD-context-compaction.md`.
+3. Update `docs/thread-registry.md` Active Lock Index if present.
+4. Mark the lock `released` or move it to an archive if the project tracks lock history.
+5. Remove the active lock file only after the release state is recorded elsewhere or the main thread accepts the cleanup.
+
+### Compaction Check Trigger Points
+
+Agents may autonomously check whether compaction is needed. Checking is lightweight and should not rewrite files.
+
+Run a compaction check at these times:
+
+- At the start of a new main-thread continuation.
+- At the start of a replacement module/support/operations/research thread.
+- Before a main thread starts a large dispatch batch.
+- Before a module thread begins a long task if its `status.md`, `handoff.md`, or `runbook.md` looks stale or oversized.
+- After processing one or more Return Packets.
+- After closing, superseding, or accepting dispatch tasks.
+- After a milestone or roadmap phase completes.
+- Before creating a release, major merge, or large project-state commit.
+- When any active doc exceeds its context budget.
+- When `docs/thread-registry.md` contains stale tasks, duplicate thread refs, or processed Return Packet rows.
+- When a user or agent reports confusion, contradictory docs, stale assumptions, or context bloat.
+- On a scheduled maintenance cadence if the project has one, such as daily for active projects or weekly for slower projects.
+
+A check may produce one of three outcomes:
+
+- `no-compaction-needed`
+- `compaction-request-created`
+- `lv2-compaction-ready`
+
+### LV2 Execution Trigger Points
+
+Autonomous LV2 execution is allowed only when all LV2 preconditions are true.
+
+LV2 preconditions:
+
+- The cleanup is docs-only.
+- A concrete compaction trigger was found.
+- No active compaction lock exists, or the current agent already owns the active lock.
+- The agent can create or update `docs/.locks/context-compaction.lock`.
+- The affected docs are not currently owned by another active task or lock.
+- The active dispatch queue has no `running` or `in-review` task that owns the same docs.
+- Processed Return Packets are clearly processed, or unprocessed packets are left untouched.
+- Historical material is archived or summarized before active docs are shortened.
+- The final diff is reviewable and limited to project-state docs.
+
+When LV2 preconditions are met, execute compaction at safe boundaries:
+
+- Immediately after main-thread Return Packet review finishes.
+- Immediately after closing or superseding dispatch tasks.
+- At the end of a module task, after checkpoint/handoff/status updates are complete.
+- Before starting a replacement thread, so the new thread reads compact active context.
+- After a roadmap phase closes and before the next phase planning begins.
+- During a configured maintenance window or automation run.
+- Before a documentation-only commit that is already intended to clean project state.
+
+Do not execute LV2 compaction:
+
+- In the middle of active implementation.
+- While another tool/thread owns a relevant lock.
+- While unreviewed Return Packets may change the same docs.
+- When source code, tests, schemas, config, migrations, or ADR decisions must change.
+- When the cleanup requires interpreting disputed project direction or ownership.
+- When `git status` or the workspace shows unrelated active edits that could be overwritten.
+
+If any precondition fails, create a Context Compaction Request instead of executing.
+
 ### Context Compaction Sweep
 
 Run a context compaction sweep when:
@@ -282,9 +460,11 @@ Run a context compaction sweep when:
 
 Sweep process:
 
-1. Read active docs only.
-2. Identify stale, duplicate, contradictory, or historical content.
-3. Compare against source-of-truth priority:
+1. Run a compaction check and classify the outcome.
+2. If execution is needed, acquire `docs/.locks/context-compaction.lock`.
+3. Read active docs only.
+4. Identify stale, duplicate, contradictory, or historical content.
+5. Compare against source-of-truth priority:
    - current code and tests
    - accepted ADRs
    - roadmap and thread registry
@@ -292,11 +472,12 @@ Sweep process:
    - handoff
    - runbook
    - archives or chat history
-4. Rewrite active docs as current snapshots.
-5. Move useful historical detail to `docs/archive/`.
-6. Close, supersede, or archive stale task rows.
-7. Empty processed Return Inbox items.
-8. Record the cleanup in `docs/archive/compactions/YYYY-MM-DD-context-compaction.md`.
+6. Archive or summarize useful historical detail before shortening active docs.
+7. Rewrite active docs as current snapshots.
+8. Close, supersede, or archive stale task rows.
+9. Empty processed Return Inbox items.
+10. Record the cleanup in `docs/archive/compactions/YYYY-MM-DD-context-compaction.md`.
+11. Release the compaction lock.
 
 ### Anti-Bloat Rules
 

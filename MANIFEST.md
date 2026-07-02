@@ -3,54 +3,59 @@
 Generated package contents:
 
 - `.gitignore` — package file — 69 bytes — sha256 `d4efada4bfb23875`
-- `CHANGELOG.md` — package file — 336 bytes — sha256 `3e53b9fb2b32b315`
+- `CHANGELOG.md` — package file — 667 bytes — sha256 `a079368a271373f4`
 - `CONTRIBUTING.md` — package file — 988 bytes — sha256 `b611143878abaa30`
-- `INSTALL.md` — installation notes — 3055 bytes — sha256 `6a3c579b71457aa3`
-- `INSTALL.zh-CN.md` — Chinese installation notes — 3366 bytes — sha256 `a68847ae39d6a60f`
+- `INSTALL.md` — installation notes — 3894 bytes — sha256 `25ac02cf23e8c10b`
+- `INSTALL.zh-CN.md` — Chinese installation notes — 4739 bytes — sha256 `20dbee233472fd92`
 - `LICENSE` — MIT open-source license — 1099 bytes — sha256 `71004cf9167540a8`
-- `MANIFEST.md` — package file — 4947 bytes — sha256 `0c183de58d69465a`
-- `README.md` — package overview — 3054 bytes — sha256 `976f6c72ffaffa77`
-- `README.zh-CN.md` — Chinese package overview — 3548 bytes — sha256 `d6572a3bbcf54699`
-- `SKILL.md` — thin bootstrap/audit/repair/compaction skill — 11944 bytes — sha256 `e0ef9d1047549f35`
-- `agents/openai.yaml` — Codex App metadata and invocation policy — 1066 bytes — sha256 `d85acaf7d21b0bb2`
-- `project-skeleton/AGENTS.md` — package file — 5038 bytes — sha256 `c1a5edee9ffdaaf0`
-- `project-skeleton/docs/archive/compactions/YYYY-MM-DD-context-compaction.example.md` — package file — 1284 bytes — sha256 `e1a3321633e964d6`
-- `project-skeleton/docs/archive/modules/example-module/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/archive/roadmap/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/archive/thread-runs/accepted/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/archive/thread-runs/failed/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/archive/thread-runs/needs-followup/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/archive/thread-runs/superseded/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/decisions/ADR-0001-title.md` — package file — 413 bytes — sha256 `8ca3f006f50157ac`
-- `project-skeleton/docs/modules/example-module/handoff.md` — package file — 1826 bytes — sha256 `2b9bbf8f7cac7a23`
-- `project-skeleton/docs/modules/example-module/runbook.md` — package file — 2116 bytes — sha256 `a94cb372c84c3538`
-- `project-skeleton/docs/modules/example-module/status.md` — package file — 1562 bytes — sha256 `47e2ff3f9c44224b`
-- `project-skeleton/docs/project-brief.md` — package file — 490 bytes — sha256 `7a4da0439e2fe592`
-- `project-skeleton/docs/roadmap.md` — package file — 1450 bytes — sha256 `c7162a3ab57d1f84`
-- `project-skeleton/docs/status.md` — package file — 974 bytes — sha256 `0e62d6731c2f9949`
-- `project-skeleton/docs/thread-operating-model.md` — package file — 38418 bytes — sha256 `f55590d962be80c1`
-- `project-skeleton/docs/thread-registry.md` — package file — 9040 bytes — sha256 `581102e960cd3a59`
-- `project-skeleton/docs/thread-runs/TASK-0001.example.md` — package file — 2982 bytes — sha256 `71d655078c25d035`
-- `project-skeleton/docs/thread-runs/archive/accepted/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/thread-runs/archive/failed/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/thread-runs/archive/needs-followup/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/thread-runs/archive/superseded/.gitkeep` — package file — 0 bytes — sha256 `e3b0c44298fc1c14`
-- `project-skeleton/docs/thread-runs/inbox/main/RET-TASK-0001-example-module-YYYYMMDD-HHMM.example.md` — package file — 2054 bytes — sha256 `0e44d1ddfcb64e97`
-- `references/adr.template.md` — package file — 413 bytes — sha256 `1a0b003361eebd3c`
-- `references/agents.template.md` — package file — 5038 bytes — sha256 `c1a5edee9ffdaaf0`
-- `references/context-compaction-note.template.md` — package file — 1284 bytes — sha256 `e1a3321633e964d6`
-- `references/cross-thread-task.template.md` — package file — 1905 bytes — sha256 `2519ecf13b952d3b`
-- `references/global-status.template.md` — package file — 974 bytes — sha256 `0e62d6731c2f9949`
-- `references/handoff.template.md` — package file — 1826 bytes — sha256 `2b9bbf8f7cac7a23`
-- `references/main-thread-dispatch-task.template.md` — package file — 2393 bytes — sha256 `9b685d78f94b738f`
-- `references/module-boundary-map.template.md` — package file — 767 bytes — sha256 `eb0236bf81557ad1`
-- `references/module-startup-prompt.template.md` — package file — 3061 bytes — sha256 `78b50db3f2755de4`
-- `references/module-status.template.md` — package file — 1556 bytes — sha256 `4413130747dbcd26`
-- `references/project-brief.template.md` — package file — 490 bytes — sha256 `7a4da0439e2fe592`
-- `references/return-packet.template.md` — package file — 2046 bytes — sha256 `82290374e345ef01`
-- `references/roadmap.template.md` — package file — 1450 bytes — sha256 `c7162a3ab57d1f84`
-- `references/runbook.template.md` — package file — 2116 bytes — sha256 `a94cb372c84c3538`
-- `references/thread-operating-model.template.md` — package file — 38418 bytes — sha256 `f55590d962be80c1`
-- `references/thread-registry.template.md` — package file — 9040 bytes — sha256 `581102e960cd3a59`
-- `references/thread-run.template.md` — package file — 2946 bytes — sha256 `3187b62def30682d`
-- `scripts/publish-to-github.sh` — package file — 830 bytes — sha256 `beda9df1bce3a6f8`
+- `MANIFEST.md` — package file — 6500 bytes — sha256 `4fbdf199363f7874`
+- `README.md` — package overview — 3712 bytes — sha256 `91e0bec0315de253`
+- `README.zh-CN.md` — Chinese package overview — 4994 bytes — sha256 `ee6f821cabcd1920`
+- `SKILL.md` — thin bootstrap/audit/repair/compaction skill — 13360 bytes — sha256 `4aca8de88a6cc9c1`
+- `agents/openai.yaml` — Codex App metadata and invocation policy — 1172 bytes — sha256 `95308052e1b0d594`
+- `project-skeleton/AGENTS.md` — project skeleton file — 5978 bytes — sha256 `c58ef25f9c7405d4`
+- `project-skeleton/CLAUDE.md` — project skeleton file — 796 bytes — sha256 `f866f20a6aa9c69e`
+- `project-skeleton/docs/.locks/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/.locks/context-compaction.lock.example` — project skeleton file — 1517 bytes — sha256 `8ebee72f18f0bbdf`
+- `project-skeleton/docs/archive/compactions/YYYY-MM-DD-context-compaction.example.md` — project skeleton file — 2482 bytes — sha256 `b6697843918a14ec`
+- `project-skeleton/docs/archive/modules/example-module/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/archive/roadmap/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/archive/thread-runs/accepted/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/archive/thread-runs/failed/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/archive/thread-runs/needs-followup/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/archive/thread-runs/superseded/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/decisions/ADR-0001-title.md` — project skeleton file — 413 bytes — sha256 `8ca3f006f50157ac`
+- `project-skeleton/docs/modules/example-module/handoff.md` — project skeleton file — 1826 bytes — sha256 `2b9bbf8f7cac7a23`
+- `project-skeleton/docs/modules/example-module/runbook.md` — project skeleton file — 2116 bytes — sha256 `a94cb372c84c3538`
+- `project-skeleton/docs/modules/example-module/status.md` — project skeleton file — 1562 bytes — sha256 `47e2ff3f9c44224b`
+- `project-skeleton/docs/project-brief.md` — project skeleton file — 490 bytes — sha256 `7a4da0439e2fe592`
+- `project-skeleton/docs/roadmap.md` — project skeleton file — 1450 bytes — sha256 `c7162a3ab57d1f84`
+- `project-skeleton/docs/status.md` — project skeleton file — 974 bytes — sha256 `0e62d6731c2f9949`
+- `project-skeleton/docs/thread-operating-model.md` — project skeleton file — 46581 bytes — sha256 `385f4908f9f9915a`
+- `project-skeleton/docs/thread-registry.md` — project skeleton file — 10347 bytes — sha256 `8cc2806b18a7187a`
+- `project-skeleton/docs/thread-runs/TASK-0001.example.md` — project skeleton file — 2982 bytes — sha256 `71d655078c25d035`
+- `project-skeleton/docs/thread-runs/archive/accepted/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/thread-runs/archive/failed/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/thread-runs/archive/needs-followup/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/thread-runs/archive/superseded/.gitkeep` — project skeleton file — 0 bytes — sha256 `e3b0c44298fc1c14`
+- `project-skeleton/docs/thread-runs/inbox/main/RET-TASK-0001-example-module-YYYYMMDD-HHMM.example.md` — project skeleton file — 2054 bytes — sha256 `0e44d1ddfcb64e97`
+- `references/adr.template.md` — reference template — 413 bytes — sha256 `1a0b003361eebd3c`
+- `references/agents.template.md` — reference template — 5978 bytes — sha256 `c58ef25f9c7405d4`
+- `references/claude.template.md` — reference template — 796 bytes — sha256 `f866f20a6aa9c69e`
+- `references/compaction-lock.template.md` — reference template — 1517 bytes — sha256 `8ebee72f18f0bbdf`
+- `references/context-compaction-note.template.md` — reference template — 2482 bytes — sha256 `b6697843918a14ec`
+- `references/cross-thread-task.template.md` — reference template — 1905 bytes — sha256 `2519ecf13b952d3b`
+- `references/global-status.template.md` — reference template — 974 bytes — sha256 `0e62d6731c2f9949`
+- `references/handoff.template.md` — reference template — 1826 bytes — sha256 `2b9bbf8f7cac7a23`
+- `references/main-thread-dispatch-task.template.md` — reference template — 2393 bytes — sha256 `9b685d78f94b738f`
+- `references/module-boundary-map.template.md` — reference template — 767 bytes — sha256 `eb0236bf81557ad1`
+- `references/module-startup-prompt.template.md` — reference template — 3061 bytes — sha256 `78b50db3f2755de4`
+- `references/module-status.template.md` — reference template — 1556 bytes — sha256 `4413130747dbcd26`
+- `references/project-brief.template.md` — reference template — 490 bytes — sha256 `7a4da0439e2fe592`
+- `references/return-packet.template.md` — reference template — 2046 bytes — sha256 `82290374e345ef01`
+- `references/roadmap.template.md` — reference template — 1450 bytes — sha256 `c7162a3ab57d1f84`
+- `references/runbook.template.md` — reference template — 2116 bytes — sha256 `a94cb372c84c3538`
+- `references/thread-operating-model.template.md` — reference template — 46581 bytes — sha256 `385f4908f9f9915a`
+- `references/thread-registry.template.md` — reference template — 10347 bytes — sha256 `8cc2806b18a7187a`
+- `references/thread-run.template.md` — reference template — 2946 bytes — sha256 `3187b62def30682d`
+- `scripts/publish-to-github.sh` — helper script — 830 bytes — sha256 `beda9df1bce3a6f8`

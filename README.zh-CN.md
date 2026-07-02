@@ -4,6 +4,8 @@
 
 它的目标不是让每次任务都反复加载一个很重的 skill，而是在项目初始化、重构、修复、压缩或升级时，把稳定的协作规则安装到项目自己的文档里。之后，日常开发线程主要读取项目内的 `AGENTS.md`、`docs/thread-operating-model.md` 和相关状态文档即可。
 
+当前版本新增 LV2 受控自主压缩、跨工具/跨线程 Compaction Lock，以及 Claude Code 兼容入口，减少长期项目中的文档膨胀、并发整理冲突和多 Agent 规则漂移。
+
 ## 核心原则
 
 ```text
@@ -32,6 +34,8 @@ project-agent-operating-model/
   agents/openai.yaml               # Codex App 元数据和显式调用策略
   references/                      # 模板和详细运行规则
   project-skeleton/                # 可复制到目标项目根目录的骨架
+    CLAUDE.md                      # Claude Code 兼容入口，默认引用 AGENTS.md
+    docs/.locks/                   # 跨工具共享的文档整理锁控制面
 ```
 
 ## 推荐工作流
@@ -41,6 +45,7 @@ project-agent-operating-model/
 3. 根据项目实际情况修改 `AGENTS.md`、`docs/thread-operating-model.md`、`docs/project-brief.md`、`docs/roadmap.md`、`docs/status.md` 和 `docs/thread-registry.md`。
 4. 日常开发、派单、回传、交接和状态维护，应依赖项目本地文档，而不是反复调用 skill。
 5. 进行跨线程派单时，先按任务难度选择模型层级，再选择具体模型版本，并记录请求模型、实际模型、配额池、降级原因和选择理由。
+6. 对文档膨胀、过期队列、已处理 Return Packet 和关闭任务行，使用 LV2 docs-only 压缩，并在需要重写活跃文档前获取 `docs/.locks/context-compaction.lock`。
 
 ## 上下文治理
 
@@ -50,7 +55,21 @@ project-agent-operating-model/
 - `handoff.md`、`status.md`、`thread-registry.md` 和 `roadmap.md` 要保持紧凑。
 - 过期、已处理、已关闭、被替代或仅用于历史追溯的内容，应移动到 `docs/archive/` 或 `docs/thread-runs/archive/`。
 - 新线程默认不读取 archive，除非任务需要审计、历史调查、回归分析或上下文压缩。
-- 当文档出现重复、冲突、过期、难以定位信息时，应执行上下文压缩。
+- 当文档出现重复、冲突、过期、难以定位信息时，应先执行压缩检查。
+- 只有在 LV2 安全前提满足时，Agent 才能自主执行 docs-only 整理。
+- LV2 可整理活跃文档快照、历史归档、已处理 Return Packet、关闭或被替代的任务行、compaction note 和 registry 中的队列/锁/上下文卫生字段。
+- LV2 不允许整理源码、测试、生产配置、schema/migration、ADR 决策内容、产品方向、模块归属、roadmap 优先级或 public contract。
+- 如果存在 active lock、stale lock、范围不清、任务仍活跃或安全前提不满足，应创建 compaction request / Return Packet，让主线程或用户决定。
+
+## 多 Agent 兼容
+
+项目骨架包含 `CLAUDE.md`，默认内容为：
+
+```md
+@AGENTS.md
+```
+
+这样 Claude Code 可以共享 Codex 使用的 `AGENTS.md`、`docs/thread-operating-model.md` 和 `docs/thread-registry.md`，避免不同工具各自维护规则而发生漂移。
 
 ## 本地化规则
 

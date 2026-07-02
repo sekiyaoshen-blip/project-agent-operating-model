@@ -108,6 +108,22 @@ Keep `docs/thread-registry.md` as an active index, not a full task history.
 - Keep only current thread refs in Thread Map; mark replaced threads in `Replaces` and archive stale details.
 - Link to archives when useful, but do not require future threads to read archives by default.
 
+## Active Lock Index
+
+Broad active-doc rewrites and LV2 context compaction must be protected by locks under `docs/.locks/`.
+
+| Lock File | Lock Type | Scope | Owner Tool | Owner Thread / Session | Owner Task / Run | Files Locked | Started | Last Heartbeat | Stale After | State | Next Action |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `docs/.locks/context-compaction.lock` | context-compaction | active docs | codex / claude-code / automation / human | <thread/session id> | <task/run id> | `docs/thread-registry.md`; `docs/roadmap.md`; `docs/status.md`; module docs | YYYY-MM-DD HH:MM | YYYY-MM-DD HH:MM | YYYY-MM-DD HH:MM | active / stale / released | Continue / release / escalate |
+
+Lock rules:
+
+- A compaction lock applies across different tools and across different threads in the same tool.
+- The owner must identify tool + thread/session + task/run when available.
+- Do not rewrite locked active docs unless you own the lock.
+- Do not silently overwrite stale locks; mark/report stale and ask the main thread or user to decide takeover.
+- Remove or archive released locks after the compaction note is written and accepted.
+
 ## Return Inbox
 
 Return packets awaiting main-thread review:
@@ -146,6 +162,7 @@ Archive processed packets under:
 - Prefer visible native Codex Desktop thread operations for cross-thread work.
 - Select Model Tier and Model Version Policy automatically for cross-thread tasks; default to latest available version, prefer `gpt-5.3-codex-spark` for suitable fast/low-risk work when its independent quota pool is useful, and record tier/model/version/quota reason.
 - Use Return Packets instead of direct child-to-main callbacks as the stable return path.
+- Use `docs/.locks/context-compaction.lock` for LV2 context compaction; do not let multiple agents or multiple threads rewrite shared active docs at the same time.
 
 - Archives are not read by default. Read `docs/archive/` only for historical investigation, regression analysis, audits, or context compaction.
 - Active docs are snapshots, not logs; avoid duplicating the same fact across registry, roadmap, handoff, runbook, and ADRs.

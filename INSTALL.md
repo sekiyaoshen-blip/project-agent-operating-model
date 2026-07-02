@@ -23,6 +23,7 @@ To bootstrap a project manually, copy the contents of `project-skeleton/` into y
 Then customize:
 
 - `AGENTS.md`
+- `CLAUDE.md` if using Claude Code or another compatible agent
 - `docs/thread-operating-model.md`
 - `docs/project-brief.md`
 - `docs/roadmap.md`
@@ -45,6 +46,9 @@ After copying the project skeleton, keep active docs as current snapshots:
 - `status.md`, `handoff.md`, `roadmap.md`, and `thread-registry.md` should not become append-only logs.
 - Archive completed phases, stale runbook history, closed dispatch tasks, and processed Return Packets.
 - Use `docs/archive/compactions/YYYY-MM-DD-context-compaction.md` to record context cleanup sweeps.
+- Use LV2 controlled autonomous compaction for docs-only cleanup when preconditions are met.
+- Acquire `docs/.locks/context-compaction.lock` before broad active-doc rewrites; the lock applies across tools and across different sessions/threads inside the same tool.
+- Create a compaction request instead of executing when scope, ownership, active tasks, or safety is unclear.
 - Do not make future threads read archives unless the task requires historical investigation or compaction.
 
 ## Localization
@@ -55,6 +59,18 @@ The installed operating model is language-neutral.
 - If no project language is configured, generated human-facing content should follow the user/system language or existing repository convention.
 - Keep code identifiers, paths, commands, APIs, schemas, model names, quota-pool names, and stable template fields in English or original form.
 - For open-source or public developer-facing artifacts, use English by default unless the project explicitly targets another language or maintains localized variants.
+
+## Multi-Agent Entry Points
+
+Codex reads `AGENTS.md`.
+
+When using Claude Code, keep root `CLAUDE.md` short and import `AGENTS.md` instead of duplicating the full operating model. The project skeleton includes a ready-to-copy `CLAUDE.md`:
+
+```md
+@AGENTS.md
+```
+
+Other agents should also treat `AGENTS.md`, `docs/thread-operating-model.md`, and `docs/thread-registry.md` as the shared source of truth.
 
 ## Codex Metadata
 

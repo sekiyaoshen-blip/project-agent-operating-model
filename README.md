@@ -4,7 +4,7 @@
 
 A Codex skill package for bootstrapping, auditing, repairing, and compacting durable project-local operating rules for long-running agent-assisted projects.
 
-It installs a project operating model with main planning threads, long-lived module/support/operations/research threads, project-state docs, handoffs, runbooks, ADRs, cross-thread dispatch, checkpoint recovery, Return Inbox workflows, model routing, localization, and context governance.
+It installs a project operating model with main planning threads, long-lived module/support/operations/research threads, project-state docs, handoffs, runbooks, ADRs, cross-thread dispatch, checkpoint recovery, Return Inbox workflows, model routing, localization, and context governance, LV2 docs-only compaction, and cross-tool/thread compaction locks.
 
 ## Core Principle
 
@@ -34,6 +34,7 @@ project-agent-operating-model/
 3. For routine development, rely on project-local `AGENTS.md` and `docs/thread-operating-model.md`.
 4. For cross-thread dispatch, choose a Model Tier by task difficulty first, then choose a Model Version. Default to the latest available compatible version for the selected tier.
 5. Record requested/actual model/version, quota pool, fallback, and selection reason in `docs/thread-registry.md` and `docs/thread-runs/<task-id>.md`.
+6. Use LV2 controlled autonomous compaction for docs-only cleanup, protected by `docs/.locks/context-compaction.lock`.
 
 ## Context Governance
 
@@ -41,13 +42,20 @@ project-agent-operating-model/
 - Keep `handoff.md`, `status.md`, `thread-registry.md`, and `roadmap.md` compact.
 - Move stale, historical, processed, closed, or superseded material to `docs/archive/` or `docs/thread-runs/archive/`.
 - Do not read archives by default; use them only for audits, historical investigation, regression analysis, or compaction.
-- Run context compaction sweeps when docs become bloated, contradictory, stale, or confusing.
+- Run compaction checks at defined points, then execute LV2 docs-only compaction only when preconditions are met.
+- Use `docs/.locks/context-compaction.lock` so different agents and same-tool threads do not rewrite shared active docs concurrently.
 
 ## Localization
 
 - Human-facing generated content follows the explicit user/project language, existing repository language, user interface / system locale, or current conversation language.
 - English is the fallback for open-source or public developer-facing artifacts.
 - Code identifiers, file paths, commands, API/schema/config fields, errors, logs, model names, quota-pool names, and stable template fields stay English or original.
+
+## Multi-Agent Compatibility
+
+The project skeleton includes optional `CLAUDE.md` support that imports `AGENTS.md`, so Claude Code and Codex can share the same project operating model instead of maintaining separate rules.
+
+All agents should check `docs/.locks/` before broad active-doc rewrites or context compaction.
 
 ## Installation
 

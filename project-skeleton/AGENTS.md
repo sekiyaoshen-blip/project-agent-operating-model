@@ -26,6 +26,9 @@ This project uses the `project-agent-operating-model` operating model.
 - Keep active docs compact. Move stale, historical, or processed material to `docs/archive/` or `docs/thread-runs/archive/`.
 - Do not read archives, all module runbooks, or all thread-runs by default.
 - Trigger a context compaction sweep when docs become stale, contradictory, oversized, or confusing.
+- Use LV2 controlled autonomous compaction: agents may execute docs-only compaction when LV2 preconditions are met, but must create a request instead when scope, ownership, or safety is unclear.
+- Broad context compaction must acquire `docs/.locks/context-compaction.lock` first; locks apply across different agent tools and across different threads/sessions inside the same tool.
+- Check for compaction at thread startup, before large dispatch batches, after Return Packet review, after task closure, after milestone closure, and whenever active docs exceed budget or contradict each other.
 
 ## Read When Relevant
 
@@ -39,6 +42,7 @@ This project uses the `project-agent-operating-model` operating model.
 - Architecture / contract decisions: `docs/decisions/`
 - Cross-thread task records: `docs/thread-runs/`
 - Historical archive, only when needed: `docs/archive/`
+- Active locks, before broad rewrites or compaction: `docs/.locks/`
 
 ## Runtime Summary
 
@@ -48,6 +52,7 @@ This project uses the `project-agent-operating-model` operating model.
 - Use Return Inbox for ordered result handling.
 - Use Model Routing so low-risk tasks can use lighter or independent-quota models while high-risk, cross-module, contract, or deep-reasoning tasks use the latest available strong reasoning model.
 - The main thread consumes queued results instead of being interrupted by child-thread callbacks.
+- Use compaction locks so Codex, Claude Code, other agents, automations, and humans do not rewrite shared active docs at the same time.
 
 ## Context Hygiene
 
@@ -57,6 +62,7 @@ This project uses the `project-agent-operating-model` operating model.
 - Keep `runbook.md` focused on current recovery context and active findings; archive old dated history.
 - Close or archive completed dispatch queue rows and processed Return Packets.
 - Use `docs/archive/compactions/YYYY-MM-DD-context-compaction.md` to record compaction sweeps.
+- Use `docs/.locks/context-compaction.lock` during LV2 compaction and release it after the compaction note and active-doc updates are complete.
 
 ## Documentation Updates
 

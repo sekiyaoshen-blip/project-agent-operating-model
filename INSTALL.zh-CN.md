@@ -19,6 +19,7 @@ project-agent-operating-model/
 - 修复已经混乱或失效的项目协作文档。
 - 压缩膨胀的上下文和历史记录。
 - 升级旧版本的项目运行模型。
+- 修复 LV2 文档压缩、Compaction Lock 或多 Agent 入口相关问题。
 
 不建议在每个普通开发任务、模块实现任务或派单任务中反复调用该 skill。
 
@@ -29,6 +30,7 @@ project-agent-operating-model/
 复制后，重点修改这些文件：
 
 - `AGENTS.md`
+- `CLAUDE.md`，如果使用 Claude Code 或其他兼容 Agent
 - `docs/thread-operating-model.md`
 - `docs/project-brief.md`
 - `docs/roadmap.md`
@@ -62,7 +64,39 @@ project-agent-operating-model/
 - `status.md`、`handoff.md`、`roadmap.md` 和 `thread-registry.md` 不应变成追加式流水账。
 - 已完成阶段、过期 runbook 历史、关闭的派单任务和已处理的 Return Packet 应归档。
 - 使用 `docs/archive/compactions/YYYY-MM-DD-context-compaction.md` 记录上下文清理。
+- 当安全前提满足时，允许 Agent 执行 LV2 受控自主 docs-only 压缩。
+- 执行大范围活跃文档重写前，应获取 `docs/.locks/context-compaction.lock`。该锁在不同工具之间共享，也区分同一工具里的不同线程或会话。
+- 如果存在 active lock、stale lock、范围不清、任务仍活跃或涉及禁止范围，应创建 compaction request / Return Packet，让主线程或用户决定。
 - 除非任务需要历史调查、审计、回归分析或压缩，否则不要让未来线程默认读取 archive。
+
+LV2 可以整理：
+
+- 活跃文档的快照化重写。
+- 过期或历史内容归档。
+- 已处理 Return Packet 移出 inbox。
+- 已关闭或被替代的任务行归档。
+- compaction note。
+- registry 中的 queue、lock 和 active context hygiene 字段。
+
+LV2 禁止整理：
+
+- 源码、测试、生产配置。
+- schema、migration。
+- ADR 决策内容。
+- 产品方向、模块归属、roadmap 优先级。
+- public contract。
+
+## 多 Agent 入口
+
+Codex 读取 `AGENTS.md`。
+
+Claude Code 可通过根目录 `CLAUDE.md` 共享同一套规则。项目骨架中的 `CLAUDE.md` 默认内容为：
+
+```md
+@AGENTS.md
+```
+
+这样 Codex 和 Claude Code 都以 `AGENTS.md`、`docs/thread-operating-model.md` 和 `docs/thread-registry.md` 为共同事实源，避免规则漂移。
 
 ## 本地化
 

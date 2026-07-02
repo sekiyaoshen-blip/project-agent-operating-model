@@ -6,12 +6,12 @@ description: >
   project-local rules for main planning threads, module/support/operations/
   research threads, AGENTS.md, project-state docs, thread registry, handoffs,
   runbooks, ADRs, cross-thread dispatch, checkpoints, return inboxes, model
-  tier/version routing, localization, context budgets, archives, and compaction.
+  tier/version routing, localization, context budgets, LV2 compaction, compaction locks, archives, and compaction.
   Use for project setup, restructuring, migration, collaboration-model repair,
-  or context-governance cleanup. Do not use for routine implementation after
+  context-governance cleanup, or lock-safe compaction repair. Do not use for routine implementation after
   AGENTS.md and docs/thread-operating-model.md are installed. Trigger terms:
   agent operating model, project agent OS, main thread, module threads,
-  context compaction, return inbox, dispatch queue, 主线程规划, 子线程实现,
+  context compaction, LV2 compaction, compaction lock, return inbox, dispatch queue, 主线程规划, 子线程实现,
   项目智能体协作, 上下文治理, 文档压缩, 归档策略.
 ---
 
@@ -56,6 +56,7 @@ After installation, runtime behavior should be governed by:
 - `docs/modules/*/runbook.md`
 - `docs/thread-runs/*`
 - `docs/archive/*`
+- `docs/.locks/*`
 - `docs/decisions/*`
 
 **Core principle:** Skill installs the system. `AGENTS.md` activates the system. Project docs run the system. The skill should not be the runtime.
@@ -128,6 +129,8 @@ docs/
       status.md
       handoff.md
       runbook.md
+  .locks/
+    context-compaction.lock.example
   thread-runs/
     <task-id>.md
     inbox/
@@ -155,9 +158,10 @@ For a new project:
 4. Install `docs/thread-operating-model.md` from `references/thread-operating-model.template.md`.
 5. Create project-state docs from the templates in `references/`.
 6. Create `docs/archive/` folders for compactions, roadmap history, module history, and historical task material.
-7. Fill `docs/thread-registry.md` with main thread, module threads, visible native thread links, fallback session/callable refs, and current state.
-8. Generate module startup prompts from `references/module-startup-prompt.template.md`.
-9. Explain that routine future work should follow `AGENTS.md` and project docs, not repeatedly invoke this skill.
+7. Create `docs/.locks/` and install `docs/.locks/context-compaction.lock.example` from `references/compaction-lock.template.md`.
+8. Fill `docs/thread-registry.md` with main thread, module threads, visible native thread links, fallback session/callable refs, and current state.
+9. Generate module startup prompts from `references/module-startup-prompt.template.md`.
+10. Explain that routine future work should follow `AGENTS.md` and project docs, not repeatedly invoke this skill.
 
 For an existing project:
 
@@ -187,6 +191,8 @@ Use the included reference files:
 - `references/thread-run.template.md` -> `docs/thread-runs/<task-id>.md`
 - `references/return-packet.template.md` -> `docs/thread-runs/inbox/main/RET-<task-id>-<module>-<timestamp>.md`
 - `references/context-compaction-note.template.md` -> `docs/archive/compactions/YYYY-MM-DD-context-compaction.md`
+- `references/compaction-lock.template.md` -> `docs/.locks/context-compaction.lock.example`
+- `references/claude.template.md` -> optional root `CLAUDE.md` when Claude Code or another CLAUDE.md-compatible workflow is used
 
 ## Runtime Contract
 
@@ -209,6 +215,9 @@ The installed project contract must preserve these rules:
 - Keep active docs within context budgets; archive stale, historical, closed, or processed material.
 - Archives are not read by default; read them only for historical investigation, regression analysis, audits, or compaction.
 - Run a context compaction sweep when docs become bloated, contradictory, stale, or confusing.
+- Use LV2 controlled autonomous compaction: agents may execute docs-only compaction at safe boundaries when all preconditions are met; otherwise create a compaction request.
+- Use `docs/.locks/context-compaction.lock` for broad compaction; locks apply across different agent tools and across different threads/sessions in the same tool.
+- Run compaction checks at startup/continuation, before large dispatch batches, after Return Packet review, after task closure, after milestone closure, and whenever docs exceed budget or contradict each other.
 - Never write secrets, tokens, credentials, private customer data, signed URLs, or access-granting links into committed project-state docs.
 
 ## Audit / Repair Checklist
@@ -235,6 +244,10 @@ When auditing an enabled project, check:
 - Are closed dispatch tasks and processed Return Packets removed from active queues/inboxes?
 - Does `docs/archive/` contain useful historical detail without being read by default?
 - Has a context compaction sweep been recorded when bloat or contradictions were repaired?
+- Does the project use LV2 controlled autonomous compaction rather than unbounded autonomous rewrites?
+- Does `docs/.locks/` exist, with a compaction lock template or active lock protocol?
+- Are compaction check trigger points and LV2 execution trigger points documented?
+- Are stale locks handled by main-thread/user takeover instead of silent overwrite?
 
 ## Fallback
 
