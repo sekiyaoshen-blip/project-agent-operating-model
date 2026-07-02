@@ -3,12 +3,12 @@
 Generated package contents:
 
 - `.gitignore` — package file — 69 bytes — sha256 `d4efada4bfb23875`
-- `CHANGELOG.md` — package file — 667 bytes — sha256 `a079368a271373f4`
+- `CHANGELOG.md` — package file — 760 bytes — sha256 `69b613bc93d0e238`
 - `CONTRIBUTING.md` — package file — 988 bytes — sha256 `b611143878abaa30`
-- `INSTALL.md` — installation notes — 3894 bytes — sha256 `25ac02cf23e8c10b`
-- `INSTALL.zh-CN.md` — Chinese installation notes — 4739 bytes — sha256 `20dbee233472fd92`
+- `INSTALL.md` — installation notes — 6088 bytes — sha256 `f7a8f31177c22017`
+- `INSTALL.zh-CN.md` — Chinese installation notes — 6941 bytes — sha256 `02be13fc5e10e472`
 - `LICENSE` — MIT open-source license — 1099 bytes — sha256 `71004cf9167540a8`
-- `MANIFEST.md` — package file — 6500 bytes — sha256 `4fbdf199363f7874`
+- `MANIFEST.md` — package file — 6500 bytes — sha256 `6aa23da0d4058561`
 - `README.md` — package overview — 3712 bytes — sha256 `91e0bec0315de253`
 - `README.zh-CN.md` — Chinese package overview — 4994 bytes — sha256 `ee6f821cabcd1920`
 - `SKILL.md` — thin bootstrap/audit/repair/compaction skill — 13360 bytes — sha256 `4aca8de88a6cc9c1`
